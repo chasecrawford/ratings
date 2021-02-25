@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "type": "library",
   "keywords": ["elo", "rating", "ranking", "system", "percentage", "index", "rpi"],
-  "homepage": "https://github.com/chasecrawford/elo-rating",
+  "homepage": "https://github.com/chasecrawford/ratings",
   "time": "2021-02-25",
   "authors": [
     {
