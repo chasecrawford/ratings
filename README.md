@@ -2,6 +2,12 @@
 
 A PHP class which implements the Elo rating system & Rating Percentage index.
 
+# Install
+
+```
+composer require chasecrawford/ratings
+```
+
 # Usage
 
 ```
