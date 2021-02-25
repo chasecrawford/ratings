@@ -1,6 +1,6 @@
 <?php
 
-namespace ChaseCrawford\Ratings;
+namespace ChaseCrawford;
 
 class RatingPercentageIndex
 {
