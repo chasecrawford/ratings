@@ -26,7 +26,7 @@ $games = [
     ...
 ];
 
-foreach($games as $game)
+foreach($games as $game):
     $elo->addGame(
         $game['one'], 
         $game['two'], 
@@ -38,7 +38,7 @@ foreach($games as $game)
         $game['two'], 
         $game['result']
     );
-endforeach
+endforeach;
 
 print "<pre>";
 
