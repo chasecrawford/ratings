@@ -12,7 +12,7 @@ class EloRating
 
     public function  __construct()
     {
-        $config = include(dirname(__FILE__) . '/../config/elo.php');
+        $config = include(dirname(__FILE__) . '/../../config/elo.php');
         $this->defaultKFactor = $config['default_k_factor'];
         $this->proRating = $config['pro_rating'];
         $this->starterBoundry = $config['starter_boundry'];
