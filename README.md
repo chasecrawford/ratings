@@ -12,7 +12,7 @@ composer require chasecrawford/ratings
 
 Calculate a new elo rating for a competitor after a result
 
-```
+```php
 use ChaseCrawford\EloRating;
 
 $elo = new EloRating;
@@ -28,7 +28,7 @@ $newEloRating = $elo->calculateElo(
 
 Find the elo ratings for all competitors from a group of results
 
-```
+```php
 $results = [...];
 
 foreach($results as $result) {
@@ -45,7 +45,7 @@ print_r($elo->getCompetitors())
 
 ## Using RPI
 
-```
+```php
 use ChaseCrawford\RatingPercentageIndex;
 
 $rpi = new RatingPercentageIndex;
