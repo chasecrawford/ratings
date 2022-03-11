@@ -5,7 +5,7 @@ namespace ChaseCrawford\EloRating;
 class EloRating
 {
 
-    private array $competitors;
+    private array $competitors = [];
     private int $defaultKFactor;
     private int $proRating;
     private int $starterBoundry;
@@ -75,7 +75,7 @@ class EloRating
         return $kFactor * ($result - $expectedResult);
     }
 
-    private function getCompetitor(string $competitorName)
+    public function getCompetitor(string $competitorName)
     {
         return $this->competitors[$competitorName] ?? new Competitor($competitorName);
     }
