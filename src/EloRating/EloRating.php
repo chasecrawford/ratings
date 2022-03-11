@@ -80,6 +80,11 @@ class EloRating
         return $this->competitors[$competitorName] ?? new Competitor($competitorName);
     }
 
+    public function getCompetitors(string $competitorName)
+    {
+        return $this->competitors;
+    }
+
     private function getExpectedResult(
         float $elo,
         float $opponentElo
