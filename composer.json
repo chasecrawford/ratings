@@ -1,11 +1,11 @@
 {
   "name": "chasecrawford/ratings",
   "description": "A PHP class which implements the Elo rating system & Rating Percentage index",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "library",
   "keywords": ["elo", "rating", "ranking", "system", "percentage", "index", "rpi"],
   "homepage": "https://github.com/chasecrawford/ratings",
-  "time": "2021-02-25",
+  "time": "2023-01-11",
   "authors": [
     {
       "name": "Chase Crawford",

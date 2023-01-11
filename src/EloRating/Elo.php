@@ -2,20 +2,20 @@
 
 namespace ChaseCrawford\EloRating;
 
-class EloRating
+class Elo
 {
 
     private array $competitors = [];
-    private int $defaultKFactor;
-    private int $proRating;
-    private int $starterBoundry;
+    private static int $defaultKFactor;
+    private static int $proRating;
+    private static int $starterBoundry;
 
     public function  __construct()
     {
         $config = include(dirname(__FILE__) . '/../../config/elo.php');
-        $this->defaultKFactor = $config['default_k_factor'];
-        $this->proRating = $config['pro_rating'];
-        $this->starterBoundry = $config['starter_boundry'];
+        self::$defaultKFactor = $config['default_k_factor'];
+        self::$proRating = $config['pro_rating'];
+        self::$starterBoundry = $config['starter_boundry'];
     }
 
     public function addResult(
@@ -43,7 +43,7 @@ class EloRating
         );
     }
 
-    public function calculateElo(
+    public static function calc(
         float $competitorOneElo,
         float $competitorTwoElo,
         int $competitorOneScore,
@@ -51,11 +51,11 @@ class EloRating
         int $competitorOneNumberOfResults = 0
     ) : float
     {
-        $expectedResult = $this->getExpectedResult(
+        $expectedResult = self::getExpectedResult(
             $competitorOneElo,
             $competitorTwoElo
         );
-        $kFactor = $this->getKFactor($competitorOneElo, $competitorOneNumberOfResults);
+        $kFactor = self::getKFactor($competitorOneElo, $competitorOneNumberOfResults);
         if($competitorOneScore === $competitorTwoScore) {
             $result = 0.5;
         } else {
@@ -63,14 +63,14 @@ class EloRating
                 ? 1
                 : 0;
         }
-        return $competitorOneElo + $this->getChange($result, $expectedResult, $kFactor);
+        return $competitorOneElo + self::getChange($result, $expectedResult, $kFactor);
     }
 
-    private function getChange(
+    private static function getChange(
         int $result,
         float $expectedResult,
         int $kFactor
-    )
+    ) : float
     {
         return $kFactor * ($result - $expectedResult);
     }
@@ -80,12 +80,12 @@ class EloRating
         return $this->competitors[$competitorName] ?? new Competitor($competitorName);
     }
 
-    public function getCompetitors()
+    public function getCompetitors() : array
     {
         return $this->competitors;
     }
 
-    private function getExpectedResult(
+    private static function getExpectedResult(
         float $elo,
         float $opponentElo
     ) : float
@@ -93,13 +93,13 @@ class EloRating
         return 1.0 / (1.0 + (10.0 ** (($opponentElo - $elo) / 400.0)));
     }
 
-    private function getKFactor(float $elo, int $numOfResults)
+    private static function getKFactor(float $elo, int $numOfResults)
     {
-        $kFactor = $this->defaultKFactor;
-        if($elo >= $this->proRating) {
+        $kFactor = self::$defaultKFactor;
+        if($elo >= self::$proRating) {
             $kFactor = 10;
         }
-        if($numOfResults < $this->starterBoundry) {
+        if($numOfResults < self::$starterBoundry) {
             $kFactor = 25;
         }
         return $kFactor;
@@ -114,7 +114,7 @@ class EloRating
     ) : void
     {
         $competitor->setElo(
-            $this->calculateElo(
+            self::calc(
                 $score,
                 $opponentScore,
                 $elo,

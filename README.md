@@ -4,7 +4,7 @@ A PHP class which implements the Elo rating system & Rating Percentage index.
 
 ## Install
 
-```
+```bash
 composer require chasecrawford/ratings
 ```
 
@@ -13,11 +13,9 @@ composer require chasecrawford/ratings
 Calculate a new elo rating for a competitor after a result
 
 ```php
-use ChaseCrawford\EloRating;
+use ChaseCrawford\EloRating\Elo;
 
-$elo = new EloRating;
-
-$newEloRating = $elo->calculateElo(
+$newEloRating = Elo::calc(
     1000,   // (float) competitor elo rating
     1000,   // (float) opponent's elo rating
     71,     // (int) competitor score
@@ -30,13 +28,14 @@ Find the elo ratings for all competitors from a group of results
 
 ```php
 $results = [...];
+$elo = new Elo();
 
 foreach($results as $result) {
   $elo->addResult(
-       $result->competitorOneName,  // (string) unique name for competitor 1
-       $result->competitorTwoName,  // (string) unique name for competitor 2
-       $result->competitorOneScore, // (int) score for competitor 1
-       $result->competitorTwoScore  // (int) score for competitor 2
+       $result['competitorOneName'],  // (string) unique name for competitor 1
+       $result['competitorTwoName'],  // (string) unique name for competitor 2
+       $result['competitorOneScore'], // (int) score for competitor 1
+       $result['competitorTwoScore']  // (int) score for competitor 2
   )
 }
 
@@ -46,20 +45,20 @@ print_r($elo->getCompetitors())
 ## Using RPI
 
 ```php
-use ChaseCrawford\RatingPercentageIndex;
-
-$rpi = new RatingPercentageIndex;
+use ChaseCrawford\RatingPercentageIndex\RPI;
 
 $results = [...];
+$rpi = new RPI();
 
 foreach($results as $result) {
-  $rpi->addGame(
-       $result->competitorOneName,  // (string) unique name for competitor 1
-       $result->competitorTwoName,  // (string) unique name for competitor 2
-       $result->outcome, // 1 for win, 0 for loss, 0.5 for draw
+  $rpi->addResult(
+       $result['competitorOneName'],  // (string) unique name for competitor 1
+       $result['competitorTwoName'],  // (string) unique name for competitor 2
+       $result['competitorOneScore'], // (int) score for competitor 1
+       $result['competitorTwoScore'], // (int) score for competitor 2
   )
 }
 
-print_r($rpi)
+print_r($rpi->getCompetitors())
 ```
 
