@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  style:
+    name: "Style check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+      - uses: ramsey/composer-install@v3
+      - run: composer style-check
+
+  phpstan:
+    name: "PHPStan"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+      - uses: ramsey/composer-install@v3
+      - run: composer phpstan
+
+  test:
+    name: "PHPUnit (PHP ${{ matrix.php }} / ${{ matrix.deps }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2", "8.3", "8.4"]
+        deps: ["lowest", "stable"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+      - uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.deps == 'lowest' && 'lowest' || 'highest' }}
+      - run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Enforce 95% coverage
+        if: matrix.php == '8.3' && matrix.deps == 'stable'
+        run: |
+          php -r '
+            $xml = simplexml_load_file("coverage.xml");
+            $m = $xml->project->metrics;
+            $covered = (int)$m["coveredstatements"];
+            $total = (int)$m["statements"];
+            $pct = $total > 0 ? 100 * $covered / $total : 0;
+            printf("Statement coverage: %d / %d (%.2f%%)\n", $covered, $total, $pct);
+            if ($pct < 95.0) {
+              fwrite(STDERR, "Coverage below 95% threshold\n");
+              exit(1);
+            }
+          '
+      - name: Upload coverage to Codecov
+        if: matrix.php == '8.3' && matrix.deps == 'stable'
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+          fail_ci_if_error: false
