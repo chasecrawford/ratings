@@ -10,11 +10,11 @@ enum Outcome: string
     case LOSS = 'loss';
     case DRAW = 'draw';
 
-    public static function fromScores(int $mine, int $theirs): self
+    public static function fromScores(int $myScore, int $theirScore): self
     {
         return match (true) {
-            $mine > $theirs => self::WIN,
-            $mine < $theirs => self::LOSS,
+            $myScore > $theirScore => self::WIN,
+            $myScore < $theirScore => self::LOSS,
             default => self::DRAW,
         };
     }
