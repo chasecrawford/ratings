@@ -49,6 +49,21 @@ jobs:
         with:
           dependency-versions: ${{ matrix.deps == 'lowest' && 'lowest' || 'highest' }}
       - run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Enforce 95% coverage
+        if: matrix.php == '8.3' && matrix.deps == 'stable'
+        run: |
+          php -r '
+            $xml = simplexml_load_file("coverage.xml");
+            $m = $xml->project->metrics;
+            $covered = (int)$m["coveredstatements"];
+            $total = (int)$m["statements"];
+            $pct = $total > 0 ? 100 * $covered / $total : 0;
+            printf("Statement coverage: %d / %d (%.2f%%)\n", $covered, $total, $pct);
+            if ($pct < 95.0) {
+              fwrite(STDERR, "Coverage below 95% threshold\n");
+              exit(1);
+            }
+          '
       - name: Upload coverage to Codecov
         if: matrix.php == '8.3' && matrix.deps == 'stable'
         uses: codecov/codecov-action@v4
