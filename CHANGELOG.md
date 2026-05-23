@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0] — 2026-05-DD
+## [2.0.0] — 2026-05-23
 
 ### Added
 
@@ -44,6 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release. Elo and RPI accumulator APIs.
 
-[Unreleased]: https://github.com/chasecrawford/ratings/compare/v2.0.0...HEAD
-[2.0.0]: https://github.com/chasecrawford/ratings/compare/v1.0.0...v2.0.0
-[1.0.0]: https://github.com/chasecrawford/ratings/releases/tag/v1.0.0
+[Unreleased]: https://github.com/chasecrawford/ratings/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/chasecrawford/ratings/compare/1.0.0...2.0.0
+[1.0.0]: https://github.com/chasecrawford/ratings/releases/tag/1.0.0
